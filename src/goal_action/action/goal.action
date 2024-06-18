@@ -1,0 +1,9 @@
+#goal definition
+geometry_msgs/Pose[] waypoints  # List of waypoint
+---
+#result definition
+std_msgs/String result  # OK, ERROR, ...
+---
+#feedback
+float32 progress    # Percentage of waypoints reached
+float32 distance_next_waypoint

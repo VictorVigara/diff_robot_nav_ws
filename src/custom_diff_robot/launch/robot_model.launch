@@ -1,0 +1,26 @@
+<launch>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find custom_diff_robot)/worlds/obstacle_room.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find custom_diff_robot)/urdf/robot.xacro" />
+
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf"  args="-urdf -model custom_diff_robot -x 0 -y 0 -z 0 -param robot_description" />
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="50.0" />
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find custom_diff_robot)/rviz/custom_diff_robot.rviz"/>
+
+  <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch">    
+    <arg name="scan1_topic"      value="/front_scan" />
+	<arg name="scan2_topic"      value="/back_scan" />
+  </include>
+</launch>
